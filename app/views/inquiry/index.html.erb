@@ -1,0 +1,94 @@
+<!-- ======= Contact Section ======= -->
+<section id="contact" class="contact section-bg">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Contact</h2>
+      <p>制作の依頼・ご相談などお気軽にお問い合わせくださいませ。
+下記フォームよりわかる範囲でご記入ください。TwitterのDMからも受け付けております。
+</p>
+    </div>
+
+    <div class="row">
+
+      <div class="col-lg-4 col-md-4">
+        <div class="contact-about">
+          <h3>SNS</h3>
+          <p>SNSはTwitterを使用していて、ソースコード管理にはGithubを用いています。</p>
+          <div class="social-links">
+            <a href="https://twitter.com/RYProduction1" class="twitter"><i class="icofont-twitter"></i></a>
+            <!-- <a href="#" class="facebook"><i class="icofont-instagram"></i></a> -->
+            <a href="https://github.com/webcreateryo" class="instagram"><i class="fa fa-github"></i></a>
+            <!-- <a href="#" class="linkedin"><i class="icofont-linkedin"></i></a> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-4">
+        <div class="info">
+          <div>
+            <i class="icofont-google-map"></i>
+            <p>福岡県在住</p>
+          </div>
+
+          <div>
+            <i class="icofont-envelope"></i>
+            <p>webcreateryo@gamil.com</p>
+          </div>
+
+          <!-- <div>
+            <i class="icofont-phone"></i>
+            <p>+1 5589 55488 55s</p>
+          </div> -->
+
+        </div>
+      </div>
+
+      <div class="col-lg-5 col-md-8">
+        <%= form_for @inquiry, :url => inquiry_confirm_path do |f| %>
+
+
+
+
+          <div class="form-group">
+        <%= f.text_field :name, :placeholder => "お名前", class: "form-control", id: "name" %>
+          </div>
+
+        <div class="form-group">
+        <%= f.text_field :email, :placeholder => "メールアドレス", class: "form-control", id: "email" %>
+        </div>
+
+        <div class="form-group">
+        <%= f.text_field :subject, :placeholder => "題名", class: "form-control", id: "subject" %>
+        </div>
+
+        <div class="form-group">
+        <%= f.text_area :message, :placeholder => "お問い合わせ内容", class: "form-control", id: "message" %>
+        </div>
+              <!-- <div class="mb-3">
+                <div class="loading">Loading</div>
+                <div class="error-message"></div>
+                <div class="sent-message">Your message has been sent. Thank you!</div>
+              </div> -->
+        <div class="text-center">
+          <%= f.submit '確認', class: 'btn btn-original' %></div>
+
+          <% if @inquiry.errors.any? %>
+            <div class="alert alert-danger" role="alert">
+              <strong>入力内容にエラーがあります</strong>
+              <ul>
+                <% @inquiry.errors.each do |attr, msg| %>
+                  <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+
+        <% end %>
+      </div>
+
+    </div>
+
+  </div>
+</section><!-- End Contact Section -->

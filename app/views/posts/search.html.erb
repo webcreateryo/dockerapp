@@ -1,0 +1,73 @@
+<p id="notice"><%= notice %></p>
+
+
+<main>
+  <div class="album py-5 bg-light">
+    <div class="container">
+<h1>Posts</h1>
+<!-- ////// -->
+<h1>記事検索</h1>
+<%= search_form_for @search do |f| %>
+ <div class="form-group">
+　　<%# #検索対象のカラムを:hoge_contで示す。itemnameだったらitemname_cont %>
+   <%= f.label :title_cont, "キーワード" %>
+   <%= f.search_field :title_cont, class: "form-control" %>
+ </div>
+ <div class="actions"><%= f.submit "Search" %></div>
+<% end %>
+<!-- //// -->
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    
+
+
+<!-- //////////// -->
+<% if @results.any? %>
+ <% @results.each do |result| %>
+<div class="col">
+<div class="card shadow-sm">
+  <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+  <% if result.image.attached? %>
+  <%= image_tag result.image %>
+  <% end %>
+  <div class="card-body">
+    <h3><%= result.title %></h3>
+    <p class="card-text"><%= result.created_at.to_s(:datetime_jp) %></p>
+    <p class="card-text"><%= strip_tags(result.content.to_s).gsub(/[\n]/,"").strip.truncate(15) %></p>
+    <div class="d-flex justify-content-between align-items-center">
+
+  <%= link_to "Read More", post_path(result), class: "btn" %>
+<br>
+      <div class="btn-group">
+        <%= link_to 'Edit', edit_post_path(result), class: "btn" %>
+        <!-- <button type="button" class="btn btn-sm btn-outline-secondary">View</button> -->
+        <%= button_to 'Destroy', result, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn" %>
+        <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+<% end %>
+<% end %>
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <br>
+      <br>
+      <div class="paginationdisplay">
+  <%= paginate @posts %>
+      </div>
+
+    </div>
+  </div>
+
+</main>
