@@ -1,0 +1,124 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Articles</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Body</th>
+      <th>Published at</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @articles.each do |article| %>
+      <tr>
+        <td><%= article.title %></td>
+        <td><%= article.body %></td>
+        <td><%= article.published_at %></td>
+        <td><%= link_to 'Show', article %></td>
+        <td><%= link_to 'Edit', edit_article_path(article) %></td>
+        <td><%= link_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p id="ico">333</p>
+<p class="text-light">222</p>
+<br>
+
+<main>
+  <section id="contact" class="contact section-bg">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Contact</h2>
+        <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg-4 col-md-4">
+          <div class="contact-about">
+            <h3>Lonely</h3>
+            <p>Cras fermentum odio eu feugiat. Justo eget magna fermentum iaculis eu non diam phasellus. Scelerisque felis imperdiet proin fermentum leo. Amet volutpat consequat mauris nunc congue.</p>
+            <div class="social-links">
+              <a href="#" class="twitter"><i class="icofont-twitter"></i></a>
+              <a href="#" class="facebook"><i class="icofont-facebook"></i></a>
+              <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
+              <a href="#" class="linkedin"><i class="icofont-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4">
+          <div class="info">
+            <div>
+              <i class="icofont-google-map"></i>
+              <p>A108 Adam Street<br>New York, NY 535022</p>
+            </div>
+
+            <div>
+              <i class="icofont-envelope"></i>
+              <p>info@example.com</p>
+            </div>
+
+            <div>
+              <i class="icofont-phone"></i>
+              <p>+1 5589 55488 55s</p>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-lg-5 col-md-8">
+          <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+            <div class="form-group">
+              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+              <div class="validate"></div>
+            </div>
+            <div class="form-group">
+              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+              <div class="validate"></div>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+              <div class="validate"></div>
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+              <div class="validate"></div>
+            </div>
+            <div class="mb-3">
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Your message has been sent. Thank you!</div>
+            </div>
+            <div class="text-center"><button type="submit">Send Message</button></div>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </section><!-- End Contact Section -->
+
+  </main>
+
+
+<script>
+  $(function() {
+    // ブルー
+    $("#ico").click(function() {
+      //文字色変更
+      $("#ico").css("color","#fff");
+      //背景変更
+      $("#ico").css("background-color","#ff0000");
+    });
+  });
+</script>
+
+<%= link_to 'New Article', new_article_path %>
