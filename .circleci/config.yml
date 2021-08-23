@@ -57,7 +57,7 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/ruby:2.6.3-node&nbsp;# バージョンについては適宜変更
+      - image: circleci/ruby:2.6.3-node&nbsp;
     working_directory: /tmp/repo
     steps:
       - checkout
