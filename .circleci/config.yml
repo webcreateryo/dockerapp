@@ -1,90 +1,35 @@
 version: 2
+
 jobs:
-  build:
-    parameters:
-      assets_precompile:
-        description: "Whether or not do assets:precompile"
-        type: boolean
-        default: false
+  test:
     docker:
-      - image: circleci/ruby:2.5.9-node # バージョンについては適宜変更
+      - image: circleci/ruby:2.5.1-node-browsers
         environment:
-          DB_HOST: 127.0.0.1
+          RAILS_ENV: test
       - image: circleci/mysql:5.7
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - bundle-v2-{{ checksum "Gemfile.lock" }}
-            - yarn-v1-{{ checksum "yarn.lock" }}
-      - run: bin/bundle check || bin/bundle install --deployment
-      - run:
-          name: install yarn dependencies
-          command: bundle exec yarn install
-      - save_cache:
-          key: bundle-v2-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-      - run:
-          command: bin/rake db:create db:migrate
-          environment:
-            RAILS_ENV: test
-
-      - run: bin/bundle exec rubocop
-      - run: bin/bundle exec rails_best_practices
-      - run: bundle exec brakeman -5 -A -w 1 -e -z
-      - run:
-          name: run tests
-          command: |
-            bundle exec rspec --format progress \
-                            --format RspecJunitFormatter \
-                            --format progress
-      - store_artifacts:
-          path: coverage
-
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-
-  deploy:
-    docker:
-      - image: circleci/ruby:2.5.9-node&nbsp;
-    working_directory: /tmp/repo
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: myapp_test
+    working_directory: ~/dockerapp
     steps:
       - checkout
       - run:
-          name: 'Install Heroku CLI, if necessary'
-          command: |
-            if [[ $(command -v heroku) == "" ]]; then
-              curl https://cli-assets.heroku.com/install.sh | sh
-            else
-              echo "Heroku is already installed. No operation was performed."
-            fi
+          name: bundle install
+          command: bundle install --path vendor/bundle
       - run:
-          name: heroku maintenance on
-          command: heroku maintenance:on --app ${HEROKU_APP_NAME}
+          name: データベースの起動を待機
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
       - run:
-          name: Deploy to Heroku_Production
-          command: |
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+          name: データベースのセットアップ
+          command: bundle exec rake db:schema:load
       - run:
-          name: heroku maintenance off
-          command: heroku maintenance:off --app ${HEROKU_APP_NAME}
+          name: テストの実行
+          command: bundle exec rspec
+
 
 workflows:
   version: 2
-  build-deploy:
+  workflows:
     jobs:
-      - build
-      - deploy:
-          requires:
-            - build # デプロイ前に必ずテストを行う
-          filters:
-            branches:
-              only:
-                - master # masterブランチが変更された場合のみデプロイを実行
+      - test
